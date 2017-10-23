@@ -32,13 +32,6 @@ public class Database extends SQLiteOpenHelper {
                 "sinif VARCHAR , " +
                 "adet VARCHAR)";
         db.execSQL(CREATE_TALEBELISTESI);
-        String CREATE_GELMEYENTALEBELISTESI="CREATE TABLE GelmeyenTalebelistesi("+"id VARCHAR , " +
-                "ad VARCHAR , " +
-                "soyad VARCHAR , " +
-                "saat VARCHAR , " +
-                "tarih VARCHAR , " +
-                "adet VARCHAR)";
-        db.execSQL(CREATE_GELMEYENTALEBELISTESI);
     }
 
     @Override
@@ -115,35 +108,5 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL(DELETE_TALEBE);
 
         db.close();
-    }
-    public void yeni_gtalebe(GTalebe gtalebe){
-        SQLiteDatabase db=this.getWritableDatabase();
-        String INSERT_GTALEBE_SQL=("INSERT INTO GelmeyenTalebelistesi(id,ad,soyad,saat,tarih,adet)"+
-                "VALUES ('"+gtalebe.getId()+"','"+gtalebe.getAd()+"','"+gtalebe.getSoyad()+"','"+gtalebe.getSaat()+"','"+gtalebe.getTarih()+"','"+gtalebe.getAdet()+"')");
-        db.execSQL(INSERT_GTALEBE_SQL);
-
-        db.close();
-    }
-    public ArrayList<GTalebe> gtalebelistesi(){
-        SQLiteDatabase db=this.getWritableDatabase();
-
-        String SELECT_TALEBELER="SELECT * FROM GelmeyenTalebelistesi";
-        Cursor cursor=db.rawQuery(SELECT_TALEBELER,null);
-
-        ArrayList<GTalebe> gtalebelist=new ArrayList<GTalebe>();
-        if(cursor!=null){
-            cursor.moveToLast();
-            do {
-                GTalebe gtlb=new GTalebe();
-                gtlb.setId(cursor.getString(0));
-                gtlb.setAd(cursor.getString(1));
-                gtlb.setSoyad(cursor.getString(2));
-                gtlb.setSaat(cursor.getString(3));
-                gtlb.setTarih(cursor.getString(4));
-                gtlb.setAdet(cursor.getString(5));
-                gtalebelist.add(gtlb);
-            }while (cursor.moveToPrevious());
-        }
-        return gtalebelist;
     }
 }
